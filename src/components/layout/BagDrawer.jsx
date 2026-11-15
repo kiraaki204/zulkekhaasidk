@@ -1,21 +1,21 @@
 import { useEffect } from 'react'
 import { Minus, Plus, X } from 'lucide-react'
-import { product, formatPrice } from '../../data/product'
+import { product, formatPrice, orderTotals, shipping } from '../../data/product'
 import { useBag } from '../../hooks/useBag'
 import { ButtonLink } from '../common/Button'
 import { useMediaQuery } from '../../hooks/useUi'
-
-const SHIPPING_PLACEHOLDER = 250
 
 export default function BagDrawer() {
   const { quantity, subtotal, isOpen, closeBag, setQuantity } = useBag()
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen) return undefined
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const onKey = (e) => e.key === 'Escape' && closeBag()
+    const onKey = (e) => {
+      if (e.key === 'Escape') closeBag()
+    }
     window.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = prev
@@ -25,8 +25,11 @@ export default function BagDrawer() {
 
   if (!isOpen) return null
 
-  const shipping = quantity > 0 ? SHIPPING_PLACEHOLDER : 0
-  const total = subtotal + shipping
+  const totals = orderTotals(quantity)
+  const shippingLabel =
+    quantity > 0 && totals.shipping === 0 ? 'Free' : formatPrice(totals.shipping)
+  const freeShipRemaining =
+    quantity > 0 && totals.shipping > 0 ? shipping.freeOver - totals.subtotal : 0
 
   return (
     <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-label="Shopping bag">
@@ -138,13 +141,19 @@ export default function BagDrawer() {
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-deep-brown-soft">Shipping (est.)</dt>
-                  <dd className="tabular-nums">{formatPrice(shipping)}</dd>
+                  <dd className="tabular-nums">{shippingLabel}</dd>
                 </div>
                 <div className="flex justify-between pt-2 border-t border-parchment/60 font-medium">
                   <dt>Total</dt>
-                  <dd className="tabular-nums">{formatPrice(total)}</dd>
+                  <dd className="tabular-nums">{formatPrice(totals.total)}</dd>
                 </div>
               </dl>
+
+              {freeShipRemaining > 0 && (
+                <p className="font-body text-[0.72rem] text-botanical-deep leading-snug">
+                  Add {formatPrice(freeShipRemaining)} more for free shipping.
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -152,7 +161,7 @@ export default function BagDrawer() {
         {quantity > 0 && (
           <div className="px-6 py-5 border-t border-parchment/70 flex flex-col gap-3">
             <ButtonLink to="/checkout" onClick={closeBag} className="w-full">
-              Checkout · {formatPrice(total)}
+              Checkout · {formatPrice(totals.total)}
             </ButtonLink>
             <button
               type="button"
