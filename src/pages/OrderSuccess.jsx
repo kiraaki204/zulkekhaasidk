@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Leaf } from 'lucide-react'
 import { product, formatPrice, orderTotals } from '../data/product'
+import { api } from '../lib/api'
 import { useReveal } from '../hooks/useUi'
 import { BotanicalSprig, CornerLeaf, LogoMark } from '../components/common/BrandMarks'
 import { ButtonLink } from '../components/common/Button'
@@ -97,8 +98,26 @@ export default function OrderSuccess() {
   const ref = useReveal()
   const location = useLocation()
   const [order] = useState(() => readLastOrder(location.state?.reference))
+  const [liveStatus, setLiveStatus] = useState(null)
 
   const fallbackTotals = useMemo(() => orderTotals(order?.quantity ?? 0), [order?.quantity])
+
+  useEffect(() => {
+    const reference = location.state?.reference ?? order?.reference
+    if (!reference) return undefined
+    let cancelled = false
+    api
+      .get(`/orders/${encodeURIComponent(reference)}`)
+      .then(({ order: live }) => {
+        if (!cancelled) setLiveStatus(live)
+      })
+      .catch(() => {
+        /* offline / order hidden — local snapshot already shown */
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [location.state?.reference, order?.reference])
 
   return (
     <div ref={ref} className="bg-ivory texture-parchment min-h-screen relative overflow-hidden">
@@ -129,6 +148,12 @@ export default function OrderSuccess() {
             {order.paymentMethod && (
               <span className="block text-xs text-deep-brown-soft mt-1 capitalize">
                 Payment: {order.paymentMethod === 'cod' ? 'Cash on Delivery' : order.paymentMethod}
+              </span>
+            )}
+            {liveStatus && (
+              <span className="block text-xs text-botanical-deep mt-1 uppercase tracking-[0.12em]">
+                Status: {liveStatus.status.replaceAll('_', ' ')}
+                {liveStatus.paymentStatus ? ` · ${liveStatus.paymentStatus.replaceAll('_', ' ')}` : ''}
               </span>
             )}
           </div>

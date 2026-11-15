@@ -2,6 +2,7 @@ import heroImage from '../assets/images/Zulfe Khaas Hair Oil Still Life.png'
 
 export const product = {
   id: 'zulfe-khaas-hair-oil-150',
+  slug: 'zulfe-khaas-hair-oil-150',
   name: 'Zulfe Khaas',
   tagline: 'Herbal Hair Oil',
   size: '150 ml',

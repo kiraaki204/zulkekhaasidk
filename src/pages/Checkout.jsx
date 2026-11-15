@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ChevronLeft, Lock } from 'lucide-react'
 import { product, formatPrice, orderTotals, shipping } from '../data/product'
+import { api } from '../lib/api'
 import { useBag } from '../hooks/useBag'
 import { useReveal } from '../hooks/useUi'
 import { Button } from '../components/common/Button'
@@ -33,11 +34,11 @@ const initialForm = {
   paymentMethod: 'cod',
 }
 
-function createOrderReference() {
-  const stamp = typeof crypto !== 'undefined' && crypto.randomUUID
-    ? crypto.randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase()
-    : Math.floor(Math.random() * 1e9).toString(36).toUpperCase()
-  return `ZK-${stamp}`
+const paymentMethodMap = {
+  cod: 'COD',
+  card: 'CARD',
+  jazzcash: 'JAZZCASH',
+  easypaisa: 'EASYPAISA',
 }
 
 function validate(values) {
@@ -114,29 +115,73 @@ export default function Checkout() {
     }
 
     setSubmitting(true)
-    // Backend order API lands in M6 — until then, simulate confirmation locally
-    // with an explicit pending state so the UI shape is production-like.
-    await new Promise((r) => setTimeout(r, 900))
-    const reference = createOrderReference()
     try {
-      sessionStorage.setItem(
-        'zulfe-khaas-last-order',
-        JSON.stringify({
-          reference,
-          quantity,
-          totals,
-          paymentMethod: values.paymentMethod,
-          name: values.fullName,
-          city: values.city,
-          createdAt: new Date().toISOString(),
-        }),
+      const { product: catalogProduct } = await api.get(
+        `/products/${encodeURIComponent(product.slug ?? 'zulfe-khaas-hair-oil-150')}`,
       )
-    } catch {
-      /* session storage unavailable */
+
+      const { order } = await api.post('/orders', {
+        customer: {
+          fullName: values.fullName.trim(),
+          email: values.email.trim(),
+          phone: values.phone.trim(),
+        },
+        address: {
+          line1: values.addressLine1.trim(),
+          line2: values.addressLine2.trim(),
+          city: values.city,
+          province: values.province.trim(),
+          postalCode: values.postalCode.trim(),
+          notes: values.notes.trim(),
+        },
+        paymentMethod: paymentMethodMap[values.paymentMethod] ?? 'COD',
+        items: [{ productId: catalogProduct.id, quantity }],
+        shipping: totals.shipping,
+      })
+
+      try {
+        sessionStorage.setItem(
+          'zulfe-khaas-last-order',
+          JSON.stringify({
+            reference: order.reference,
+            quantity,
+            totals: {
+              subtotal: order.subtotalPkr,
+              shipping: order.shippingPkr,
+              total: order.totalPkr,
+            },
+            paymentMethod: values.paymentMethod,
+            name: values.fullName,
+            city: values.city,
+            createdAt: order.createdAt,
+          }),
+        )
+      } catch {
+        /* session storage unavailable */
+      }
+
+      clear()
+      navigate('/order-success', { state: { reference: order.reference } })
+    } catch (err) {
+      setFormError(err.message ?? 'Could not place the order. Please try again.')
+      if (err.details && Array.isArray(err.details)) {
+        const first = err.details[0]
+        if (first?.path) {
+          const map = {
+            'customer.fullName': 'fullName',
+            'customer.email': 'email',
+            'customer.phone': 'phone',
+            'address.line1': 'addressLine1',
+            'address.city': 'city',
+            'address.province': 'province',
+          }
+          const key = map[first.path]
+          if (key) setErrors((prev) => ({ ...prev, [key]: first.message }))
+        }
+      }
+    } finally {
+      setSubmitting(false)
     }
-    clear()
-    setSubmitting(false)
-    navigate('/order-success', { state: { reference } })
   }
 
   if (quantity === 0) {
