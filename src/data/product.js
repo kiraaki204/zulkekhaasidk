@@ -8,7 +8,9 @@ export const product = {
   price: 2499,
   currency: 'PKR',
   inStock: true,
+  stockQuantity: 120,
   heroImage,
+  gallery: [heroImage],
   description:
     'A slow-crafted herbal hair oil enriched with 27 botanicals, simmered in a mustard-oil base. Made to nourish the scalp, strengthen the lengths, and bring a quiet ritual of care to every day.',
   benefits: [
@@ -25,3 +27,16 @@ export const formatPrice = (amount) =>
     currency: 'PKR',
     maximumFractionDigits: 0,
   }).format(amount)
+
+/** Configurable checkout placeholders — replaced by backend config later. */
+export const shipping = {
+  flatRate: 250,
+  freeOver: 5000,
+  estimateDays: { min: 2, max: 5 },
+}
+
+export const orderTotals = (qty, price = product.price, ship = shipping) => {
+  const subtotal = qty * price
+  const shippingCost = subtotal === 0 || subtotal >= ship.freeOver ? 0 : ship.flatRate
+  return { subtotal, shipping: shippingCost, total: subtotal + shippingCost }
+}
