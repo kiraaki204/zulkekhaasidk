@@ -34,6 +34,7 @@ export const api = {
   base: API_BASE,
   get: (path, opts) => request(path, opts),
   post: (path, body, opts) => request(path, { ...opts, method: 'POST', body }),
+  patch: (path, body, opts) => request(path, { ...opts, method: 'PATCH', body }),
   login: (body) => request('/auth/login', { method: 'POST', body }),
   logout: () => request('/auth/logout', { method: 'POST' }),
   me: () => request('/auth/me'),
