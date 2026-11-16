@@ -15,6 +15,7 @@ import { Button } from '../components/common/Button'
 import { useReveal } from '../hooks/useUi'
 
 const ORDER_STATUSES = ['PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED']
+const PAYMENT_STATUSES = ['PENDING', 'PAID', 'FAILED', 'REFUNDED', 'COD_PENDING']
 const REVIEW_STATUSES = ['PENDING', 'PUBLISHED', 'HIDDEN']
 const TABS = [
   { id: 'orders', label: 'Orders', icon: ShoppingBag },
@@ -196,11 +197,14 @@ function OrdersPanel() {
   const orders = loading ? [] : result.orders
   const error = loading ? '' : result.error
 
-  const updateStatus = async (id, status) => {
+  const updateOrder = async (id, patch) => {
     setBusyId(id)
     try {
-      await api.patch(`/admin/orders/${id}`, { status })
-      setResult((r) => ({ ...r, orders: r.orders.map((o) => (o.id === id ? { ...o, status } : o)) }))
+      await api.patch(`/admin/orders/${id}`, patch)
+      setResult((r) => ({
+        ...r,
+        orders: r.orders.map((o) => (o.id === id ? { ...o, ...patch } : o)),
+      }))
     } catch (err) {
       setResult((r) => ({ ...r, error: err.message }))
     } finally {
@@ -298,8 +302,20 @@ function OrdersPanel() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <Badge tone={statusTone(o.paymentStatus)}>{o.paymentStatus}</Badge>
-                    <span className="block font-body text-[0.6rem] uppercase tracking-[0.1em] text-deep-brown-soft mt-1">
+                    <select
+                      value={o.paymentStatus}
+                      disabled={busyId === o.id}
+                      onChange={(e) => updateOrder(o.id, { paymentStatus: e.target.value })}
+                      aria-label={`Update payment status for ${o.reference}`}
+                      className="bg-ivory border border-parchment px-2 py-1.5 font-body text-xs text-deep-brown focus:border-rosewood focus:outline-none disabled:opacity-60 mb-1"
+                    >
+                      {PAYMENT_STATUSES.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
+                    <span className="block font-body text-[0.6rem] uppercase tracking-[0.1em] text-deep-brown-soft">
                       {o.paymentMethod}
                     </span>
                   </td>
@@ -313,7 +329,7 @@ function OrdersPanel() {
                     <select
                       value={o.status}
                       disabled={busyId === o.id}
-                      onChange={(e) => updateStatus(o.id, e.target.value)}
+                      onChange={(e) => updateOrder(o.id, { status: e.target.value })}
                       aria-label={`Update status for ${o.reference}`}
                       className="bg-ivory border border-parchment px-2 py-1.5 font-body text-xs text-deep-brown focus:border-rosewood focus:outline-none disabled:opacity-60"
                     >

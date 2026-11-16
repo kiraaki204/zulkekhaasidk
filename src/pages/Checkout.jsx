@@ -9,10 +9,10 @@ import { Button } from '../components/common/Button'
 import { BotanicalSprig } from '../components/common/BrandMarks'
 
 const paymentMethods = [
-  { id: 'cod', label: 'Cash on Delivery', hint: 'Pay when your parcel arrives' },
-  { id: 'card', label: 'Card', hint: 'Visa / Mastercard — via secure gateway' },
-  { id: 'jazzcash', label: 'JazzCash', hint: 'Mobile wallet' },
-  { id: 'easypaisa', label: 'Easypaisa', hint: 'Mobile wallet' },
+  { id: 'cod', code: 'COD', label: 'Cash on Delivery', hint: 'Pay when your parcel arrives' },
+  { id: 'card', code: 'CARD', label: 'Card', hint: 'Visa / Mastercard — via secure gateway' },
+  { id: 'jazzcash', code: 'JAZZCASH', label: 'JazzCash', hint: 'Mobile wallet' },
+  { id: 'easypaisa', code: 'EASYPAISA', label: 'Easypaisa', hint: 'Mobile wallet' },
 ]
 
 const pakistanCities = [
@@ -84,8 +84,34 @@ export default function Checkout() {
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [formError, setFormError] = useState('')
+  const [payConfig, setPayConfig] = useState(null)
 
   const totals = orderTotals(quantity)
+
+  useEffect(() => {
+    let cancelled = false
+    api
+      .get('/payments/config')
+      .then((data) => {
+        if (!cancelled) setPayConfig(data)
+      })
+      .catch(() => {
+        /* offline — default to COD-only */
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const methodEnabled = (code) => {
+    if (!payConfig) return code === 'COD'
+    return Boolean(payConfig.methods?.[code]?.enabled)
+  }
+
+  // Derive effective method so disabled options fall back to COD without effect-setState
+  const selectedMethod = paymentMethods.find((m) => m.id === values.paymentMethod)
+  const effectiveMethodId =
+    selectedMethod && methodEnabled(selectedMethod.code) ? selectedMethod.id : 'cod'
 
   useEffect(() => {
     if (quantity === 0) return undefined
@@ -134,7 +160,7 @@ export default function Checkout() {
           postalCode: values.postalCode.trim(),
           notes: values.notes.trim(),
         },
-        paymentMethod: paymentMethodMap[values.paymentMethod] ?? 'COD',
+        paymentMethod: paymentMethodMap[effectiveMethodId] ?? 'COD',
         items: [{ productId: catalogProduct.id, quantity }],
         shipping: totals.shipping,
       })
@@ -150,7 +176,7 @@ export default function Checkout() {
               shipping: order.shippingPkr,
               total: order.totalPkr,
             },
-            paymentMethod: values.paymentMethod,
+            paymentMethod: effectiveMethodId,
             name: values.fullName,
             city: values.city,
             createdAt: order.createdAt,
@@ -351,15 +377,18 @@ export default function Checkout() {
             <fieldset className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <legend className="sr-only">Choose a payment method</legend>
               {paymentMethods.map((m) => {
-                const active = values.paymentMethod === m.id
+                const active = effectiveMethodId === m.id
+                const enabled = methodEnabled(m.code)
                 return (
                   <label
                     key={m.id}
                     className={[
-                      'relative flex items-start gap-3 border px-4 py-4 cursor-pointer transition-all',
-                      active
-                        ? 'border-rosewood bg-butter-soft/30 shadow-[0_1px_0_rgba(152,118,109,0.15)]'
-                        : 'border-parchment bg-ivory hover:border-rosewood/40',
+                      'relative flex items-start gap-3 border px-4 py-4 transition-all',
+                      !enabled
+                        ? 'border-parchment/60 bg-parchment-light/30 cursor-not-allowed opacity-75'
+                        : active
+                          ? 'border-rosewood bg-butter-soft/30 shadow-[0_1px_0_rgba(152,118,109,0.15)] cursor-pointer'
+                          : 'border-parchment bg-ivory hover:border-rosewood/40 cursor-pointer',
                     ].join(' ')}
                   >
                     <input
@@ -367,6 +396,7 @@ export default function Checkout() {
                       name="paymentMethod"
                       value={m.id}
                       checked={active}
+                      disabled={!enabled}
                       onChange={set('paymentMethod')}
                       className="sr-only"
                     />
@@ -379,8 +409,15 @@ export default function Checkout() {
                     >
                       {active && <span className="w-2 h-2 rounded-full bg-rosewood" />}
                     </span>
-                    <span className="min-w-0">
-                      <span className="block font-body text-sm font-medium text-deep-brown">{m.label}</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center gap-2 flex-wrap">
+                        <span className="font-body text-sm font-medium text-deep-brown">{m.label}</span>
+                        {!enabled && (
+                          <span className="font-body text-[0.58rem] uppercase tracking-[0.12em] text-deep-brown-soft border border-parchment px-1.5 py-px">
+                            Coming soon
+                          </span>
+                        )}
+                      </span>
                       <span className="block font-body text-xs text-deep-brown-soft mt-0.5">{m.hint}</span>
                     </span>
                     {active && (
@@ -392,9 +429,9 @@ export default function Checkout() {
             </fieldset>
 
             <p className="font-body text-xs text-deep-brown-soft/80 leading-relaxed bg-cream border border-parchment/60 px-4 py-3">
-              Card, JazzCash, and Easypaisa payments are processed through verified gateway
-              integrations on the backend — never stored on this site. Cash on Delivery is
-              available nationwide.
+              Cash on Delivery is available nationwide — pay the courier when your parcel arrives.
+              Card, JazzCash, and Easypaisa launch once our payment gateway is live; they are never
+              stored on this site.
             </p>
           </section>
         </div>

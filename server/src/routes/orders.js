@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma.js'
+import { config } from '../lib/config.js'
 import { ApiError } from '../middleware/errors.js'
 import { validateBody } from '../middleware/validate.js'
 import { validateOrderRequest } from '../lib/orderValidation.js'
@@ -42,6 +43,13 @@ function makeReference() {
 router.post('/orders', validateBody(orderSchema), async (req, res, next) => {
   try {
     const { customer, address, paymentMethod, items, shipping } = req.body
+
+    if (paymentMethod !== 'COD' && !config.payments.onlineEnabled) {
+      throw new ApiError(
+        409,
+        'Online payments are not available yet — please choose Cash on Delivery',
+      )
+    }
 
     const priced = await validateOrderRequest({ items, shipping })
 

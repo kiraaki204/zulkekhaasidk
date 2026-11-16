@@ -28,5 +28,9 @@ export const config = {
     flatRatePkr: Number(process.env.SHIPPING_FLAT_RATE_PKR ?? 250),
     freeOverPkr: Number(process.env.SHIPPING_FREE_OVER_PKR ?? 5000),
   },
+  payments: {
+    /** Digital gateways (CARD/JAZZCASH/EASYPAISA) stay off until merchant credentials exist. */
+    onlineEnabled: process.env.PAYMENTS_ONLINE_ENABLED === 'true',
+  },
   databaseUrl: required('DATABASE_URL'),
 }
