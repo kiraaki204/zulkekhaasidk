@@ -29,7 +29,7 @@ M1 Homepage foundation
 
 ---
 
-## M2 — Product page + Shopping bag (NEXT)
+## M2 — Product page + Shopping bag
 **Branch:** `feature/product-page-bag` (from `dev`)
 **Depends on:** M1
 **Delivers:**
@@ -130,7 +130,7 @@ M1 Homepage foundation
 
 ---
 
-## M10 — Security, a11y, polish
+## M10 — Security, a11y, polish ✅
 **Branch:** `feature/hardening` (may split)
 **Depends on:** M6–M9
 **Delivers:**
@@ -139,10 +139,11 @@ M1 Homepage foundation
 - Performance: image sizes, code-split routes, loading states
 - Page transitions / branded loader from brief §19
 **Verify:** lint, build, axe/manual a11y, dependency audit.
+**Status:** Implemented on `feature/hardening`. Route-level code-splitting + `BrandLoader` (§19), shared `useFocusTrap` across bag drawer / herb profile / help modal / journal search, hero PNG → WebP (2.1 MB → 132 KB) with dimensions to prevent CLS, WCAG AA contrast pass on accent tokens and placeholders, env-secret hygiene + `npm audit` scripts (0 vulnerabilities), status-aware error responses (CORS rejects 403, not 500). Lint + build + server smoke green.
 
 ---
 
-## M11 — Deployment & release
+## M11 — Deployment & release (NEXT)
 **Branch:** `feature/deploy` then release PR `dev` → `main`
 **Depends on:** all above
 **Delivers:**

@@ -25,7 +25,7 @@ const TABS = [
 ]
 
 const inputCls =
-  'bg-ivory border border-parchment px-3 py-2.5 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors w-full'
+  'bg-ivory border border-parchment px-3 py-2.5 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors w-full'
 
 function Badge({ children, tone = 'neutral' }) {
   const tones = {

@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronDown, Mail, MessageCircle, Phone, X } from 'lucide-react'
-import { useReveal } from '../hooks/useUi'
+import { useReveal, useFocusTrap } from '../hooks/useUi'
 import { BotanicalSprig } from '../components/common/BrandMarks'
 import { Button } from '../components/common/Button'
 
@@ -49,32 +49,37 @@ const helpCategories = [
 
 function HelpModal({ category, onClose }) {
   const [openId, setOpenId] = useState(null)
+  const panelRef = useRef(null)
+  const closeRef = useRef(null)
+
+  useFocusTrap(panelRef, {
+    active: Boolean(category),
+    initialFocusRef: closeRef,
+    onEscape: onClose,
+  })
 
   useEffect(() => {
     if (!category) return undefined
-    const onKey = (e) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
-      window.removeEventListener('keydown', onKey)
       document.body.style.overflow = prev
     }
-  }, [category, onClose])
+  }, [category])
 
   if (!category) return null
 
   return (
     <div className="fixed inset-0 z-[65] flex items-end md:items-center justify-center md:p-6" role="dialog" aria-modal="true" aria-labelledby="help-title">
       <button type="button" className="absolute inset-0 bg-ink/40 backdrop-blur-[2px]" aria-label="Close panel" onClick={onClose} />
-      <div className="relative bg-ivory w-full md:max-w-lg max-h-[88vh] overflow-y-auto border border-parchment/70 shadow-2xl" style={{ animation: 'page-fade 0.3s ease both' }}>
+      <div ref={panelRef} className="relative bg-ivory w-full md:max-w-lg max-h-[88vh] overflow-y-auto border border-parchment/70 shadow-2xl" style={{ animation: 'page-fade 0.3s ease both' }}>
         <div className="sticky top-0 bg-ivory/97 backdrop-blur border-b border-parchment/60 px-6 py-4 flex items-start justify-between gap-4 z-10">
           <div>
             <p className="eyebrow !text-[0.62rem]">Help</p>
             <h2 id="help-title" className="font-heading text-2xl text-deep-brown mt-1">{category.title}</h2>
             <p className="font-body text-xs text-deep-brown-soft mt-1">{category.blurb}</p>
           </div>
-          <button type="button" onClick={onClose} aria-label="Close" className="p-2 -mr-2 -mt-1 text-deep-brown hover:text-rosewood transition-colors">
+          <button ref={closeRef} type="button" onClick={onClose} aria-label="Close" className="p-2 -mr-2 -mt-1 text-deep-brown hover:text-rosewood transition-colors">
             <X size={20} strokeWidth={1.4} />
           </button>
         </div>
@@ -157,7 +162,7 @@ export default function Contact() {
               rel="noreferrer noopener"
               className="group flex items-center gap-4 bg-botanical/15 border border-botanical/30 px-6 py-5 hover:bg-botanical/25 transition-colors"
             >
-              <span className="w-12 h-12 rounded-full bg-botanical text-cream flex items-center justify-center shrink-0">
+              <span className="w-12 h-12 rounded-full bg-botanical-deep text-cream flex items-center justify-center shrink-0">
                 <MessageCircle size={20} strokeWidth={1.5} aria-hidden="true" />
               </span>
               <span className="min-w-0">
@@ -209,7 +214,7 @@ export default function Contact() {
                     required
                     autoComplete="name"
                     placeholder="Your name"
-                    className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors"
+                    className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
@@ -220,7 +225,7 @@ export default function Contact() {
                     required
                     autoComplete="email"
                     placeholder="you@example.com"
-                    className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors"
+                    className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors"
                   />
                 </label>
               </div>
@@ -247,7 +252,7 @@ export default function Contact() {
                   required
                   rows={5}
                   placeholder="How can we help?"
-                  className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors resize-y min-h-[120px]"
+                  className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors resize-y min-h-[120px]"
                 />
               </label>
 

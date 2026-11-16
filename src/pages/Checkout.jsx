@@ -56,7 +56,7 @@ function validate(values) {
 
 const fieldCls = (hasError) =>
   [
-    'bg-ivory border px-4 py-3 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors w-full',
+    'bg-ivory border px-4 py-3 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors w-full',
     hasError ? 'border-rosewood bg-rosewood-soft/10' : 'border-parchment',
   ].join(' ')
 
@@ -446,6 +446,8 @@ export default function Checkout() {
                 <img
                   src={product.heroImage}
                   alt={product.name}
+                  width={1681}
+                  height={936}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />

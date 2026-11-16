@@ -1,27 +1,25 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Minus, Plus, X } from 'lucide-react'
 import { product, formatPrice, orderTotals, shipping } from '../../data/product'
 import { useBag } from '../../hooks/useBag'
 import { ButtonLink } from '../common/Button'
-import { useMediaQuery } from '../../hooks/useUi'
+import { useMediaQuery, useFocusTrap } from '../../hooks/useUi'
 
 export default function BagDrawer() {
   const { quantity, subtotal, isOpen, closeBag, setQuantity } = useBag()
   const isDesktop = useMediaQuery('(min-width: 768px)')
+  const panelRef = useRef(null)
+
+  useFocusTrap(panelRef, { active: isOpen, onEscape: closeBag })
 
   useEffect(() => {
     if (!isOpen) return undefined
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const onKey = (e) => {
-      if (e.key === 'Escape') closeBag()
-    }
-    window.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = prev
-      window.removeEventListener('keydown', onKey)
     }
-  }, [isOpen, closeBag])
+  }, [isOpen])
 
   if (!isOpen) return null
 
@@ -41,6 +39,7 @@ export default function BagDrawer() {
       />
 
       <div
+        ref={panelRef}
         className={[
           'absolute bg-ivory shadow-2xl flex flex-col transition-all duration-400 ease-out',
           isDesktop
@@ -86,6 +85,8 @@ export default function BagDrawer() {
                   <img
                     src={product.heroImage}
                     alt={product.name}
+                    width={1681}
+                    height={936}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />

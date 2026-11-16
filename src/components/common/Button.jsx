@@ -8,7 +8,7 @@ const variants = {
   ghost:
     'bg-transparent text-deep-brown border border-transparent hover:bg-deep-brown/[0.05]',
   botanical:
-    'bg-botanical text-cream hover:bg-botanical-deep border border-transparent',
+    'bg-botanical text-deep-brown hover:bg-botanical-deep hover:text-cream border border-transparent',
 }
 
 const sizes = {

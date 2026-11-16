@@ -72,7 +72,7 @@ function SubmitForm({ onDone }) {
   }
 
   const inputCls =
-    'bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors w-full'
+    'bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors w-full'
 
   return (
     <form onSubmit={submit} className="bg-cream border border-parchment/70 px-6 py-7 md:px-9 flex flex-col gap-4">

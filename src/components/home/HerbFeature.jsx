@@ -50,7 +50,7 @@ function HerbOrbit({ activeId, onSelect }) {
             className={[
               'absolute -translate-x-1/2 -translate-y-1/2 rounded-full px-2 py-1 font-body text-[0.62rem] sm:text-[0.68rem] tracking-[0.04em] transition-all duration-300 border',
               active
-                ? 'bg-botanical text-cream border-botanical-deep scale-110 shadow-lg z-10'
+                ? 'bg-botanical text-deep-brown border-botanical-deep scale-110 shadow-lg z-10'
                 : 'bg-ivory/90 text-deep-brown-soft border-parchment/70 hover:border-botanical hover:text-deep-brown hover:scale-105',
             ].join(' ')}
             style={{ left: `${x}%`, top: `${y}%` }}

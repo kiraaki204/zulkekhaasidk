@@ -20,6 +20,10 @@ export function errorHandler(err, _req, res, _next) {
     res.status(400).json({ error: { message: 'Invalid JSON body' } })
     return
   }
-  console.error('[api]', err)
-  res.status(500).json({ error: { message: 'Internal server error' } })
+  // Framework errors (e.g. CORS) may carry a status — honor it without leaking details.
+  const status = Number.isInteger(err?.status) ? err.status : 500
+  if (status >= 500) console.error('[api]', err)
+  res.status(status).json({
+    error: { message: status >= 500 ? 'Internal server error' : 'Request rejected' },
+  })
 }

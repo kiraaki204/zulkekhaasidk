@@ -20,7 +20,7 @@ const PRODUCT = {
     'Lightweight mustard-oil base, never greasy-heavy',
     'A calming botanical ritual for daily or weekly care',
   ],
-  heroImage: '/src/assets/images/Zulfe Khaas Hair Oil Still Life.png',
+  heroImage: null, // frontend imports the bundled asset; API heroImage is optional CDN path
 }
 
 async function main() {

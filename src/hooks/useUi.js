@@ -1,5 +1,70 @@
 import { useEffect, useRef, useSyncExternalStore } from 'react'
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+/**
+ * Trap Tab focus inside `containerRef` while active, focus `initialFocusRef`
+ * (or the first focusable) on open, and restore focus on close.
+ * Escape calls `onEscape` when provided.
+ */
+export function useFocusTrap(containerRef, { active = true, initialFocusRef, onEscape } = {}) {
+  const escapeRef = useRef(onEscape)
+  useEffect(() => {
+    escapeRef.current = onEscape
+  }, [onEscape])
+
+  useEffect(() => {
+    if (!active) return undefined
+    const container = containerRef.current
+    if (!container) return undefined
+
+    const prev = document.activeElement
+
+    const getFocusable = () =>
+      Array.from(container.querySelectorAll(FOCUSABLE)).filter(
+        (el) => el.offsetParent !== null || el === document.activeElement,
+      )
+
+    const target = initialFocusRef?.current ?? getFocusable()[0] ?? container
+    // Defer so entrance animation / paint doesn't fight focus
+    const raf = requestAnimationFrame(() => target.focus({ preventScroll: true }))
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation()
+        escapeRef.current?.()
+        return
+      }
+      if (e.key !== 'Tab') return
+      const nodes = getFocusable()
+      if (!nodes.length) {
+        e.preventDefault()
+        return
+      }
+      const first = nodes[0]
+      const last = nodes[nodes.length - 1]
+      const current = document.activeElement
+      if (e.shiftKey && (current === first || !container.contains(current))) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && (current === last || !container.contains(current))) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown, true)
+    return () => {
+      cancelAnimationFrame(raf)
+      document.removeEventListener('keydown', onKeyDown, true)
+      if (prev instanceof HTMLElement && document.contains(prev)) {
+        prev.focus({ preventScroll: true })
+      }
+    }
+  }, [active, containerRef, initialFocusRef])
+}
+
 /**
  * Adds `is-visible` to elements with class `reveal` when they enter the viewport.
  * Class toggling only — no React state, so reduced-motion CSS still applies cleanly.
