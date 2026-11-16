@@ -10,6 +10,7 @@ import orderRoutes from './routes/orders.js'
 import authRoutes from './routes/auth.js'
 import reviewRoutes from './routes/reviews.js'
 import adminRoutes from './routes/admin.js'
+import paymentRoutes from './routes/payments.js'
 
 export function createApp() {
   const app = express()
@@ -54,6 +55,7 @@ export function createApp() {
   app.use('/api', authRoutes)
   app.use('/api', reviewRoutes)
   app.use('/api', adminRoutes)
+  app.use('/api', paymentRoutes)
 
   app.use(notFound)
   app.use(errorHandler)

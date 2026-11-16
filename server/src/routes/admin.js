@@ -6,7 +6,8 @@ import { validateBody } from '../middleware/validate.js'
 import { requireAdmin } from '../middleware/auth.js'
 
 const router = Router()
-router.use(requireAdmin)
+// Scope auth to /admin/* only — a bare router.use would 401 every /api request that hits this router first
+router.use('/admin', requireAdmin)
 
 const orderStatusEnum = z.enum(['PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'])
 const paymentStatusEnum = z.enum(['PENDING', 'PAID', 'FAILED', 'REFUNDED', 'COD_PENDING'])
