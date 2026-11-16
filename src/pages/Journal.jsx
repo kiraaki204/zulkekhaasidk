@@ -1,23 +1,31 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Search, Sprout, X } from 'lucide-react'
 import { herbs, getHerbBySlug } from '../data/herbs'
-import { useReveal } from '../hooks/useUi'
+import { useReveal, useFocusTrap } from '../hooks/useUi'
 import { BotanicalSprig, CornerLeaf } from '../components/common/BrandMarks'
 import { ButtonLink } from '../components/common/Button'
 
 /* ——— Search overlay ——— */
 function SearchPanel({ open, onClose, onPick }) {
   const [query, setQuery] = useState('')
+  const panelRef = useRef(null)
+  const inputRef = useRef(null)
+
+  useFocusTrap(panelRef, {
+    active: open,
+    initialFocusRef: inputRef,
+    onEscape: onClose,
+  })
 
   useEffect(() => {
     if (!open) return undefined
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open, onClose])
+  }, [open])
 
   const closeAndReset = () => {
     setQuery('')
@@ -37,17 +45,17 @@ function SearchPanel({ open, onClose, onPick }) {
   return (
     <div className="fixed inset-0 z-[65] flex items-start justify-center pt-24 px-4" role="dialog" aria-modal="true" aria-label="Search the journal">
       <button type="button" className="absolute inset-0 bg-ink/40" aria-label="Close search" onClick={closeAndReset} />
-      <div className="relative w-full max-w-lg bg-ivory border border-parchment shadow-2xl" style={{ animation: 'page-fade 0.25s ease both' }}>
+      <div ref={panelRef} className="relative w-full max-w-lg bg-ivory border border-parchment shadow-2xl" style={{ animation: 'page-fade 0.25s ease both' }}>
         <div className="flex items-center gap-3 px-5 py-4 border-b border-parchment/70">
           <Search size={17} strokeWidth={1.5} className="text-deep-brown-soft shrink-0" aria-hidden="true" />
           <input
-            autoFocus
+            ref={inputRef}
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search herbs…"
             aria-label="Search herbs"
-            className="flex-1 bg-transparent font-body text-deep-brown placeholder:text-parchment focus:outline-none py-1"
+            className="flex-1 bg-transparent font-body text-deep-brown placeholder:text-deep-brown-soft/90 focus:outline-none py-1"
           />
           <button type="button" onClick={closeAndReset} aria-label="Close search" className="text-deep-brown-soft hover:text-rosewood transition-colors p-1">
             <X size={18} strokeWidth={1.5} />
@@ -179,7 +187,7 @@ function JournalIndex({ onOpenSearch }) {
                   <h3 className="font-heading text-2xl text-deep-brown mt-3 group-hover:text-rosewood transition-colors leading-tight">
                     {herb.name}
                   </h3>
-                  <p className="font-heading italic text-sm text-rosewood/90 mt-0.5">{herb.botanicalName}</p>
+                  <p className="font-heading italic text-sm text-rosewood mt-0.5">{herb.botanicalName}</p>
                   <p className="font-body text-sm text-deep-brown-soft leading-relaxed mt-3 line-clamp-3 flex-1">
                     {herb.traditionalUses}
                   </p>
@@ -256,7 +264,7 @@ function JournalEntry({ herb }) {
                   <p className="font-body text-[0.95rem] text-deep-brown-soft/90 leading-relaxed italic">{s.extra}</p>
                 )}
                 {s.note && (
-                  <p className="font-body text-xs text-rosewood/90 bg-rosewood-soft/15 border border-rosewood-soft/30 px-4 py-2.5 leading-relaxed">
+                  <p className="font-body text-xs text-rosewood bg-rosewood-soft/15 border border-rosewood-soft/30 px-4 py-2.5 leading-relaxed">
                     {s.note}
                   </p>
                 )}

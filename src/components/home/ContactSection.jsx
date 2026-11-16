@@ -39,7 +39,7 @@ export default function ContactSection() {
                 rel="noreferrer noopener"
                 className="group flex items-center gap-4 bg-botanical/15 border border-botanical/30 px-5 py-4 hover:bg-botanical/25 transition-colors"
               >
-                <span className="w-10 h-10 rounded-full bg-botanical text-cream flex items-center justify-center shrink-0">
+                <span className="w-10 h-10 rounded-full bg-botanical-deep text-cream flex items-center justify-center shrink-0">
                   <MessageCircle size={18} strokeWidth={1.5} aria-hidden="true" />
                 </span>
                 <span>
@@ -89,7 +89,7 @@ export default function ContactSection() {
                     name="name"
                     required
                     autoComplete="name"
-                    className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors"
+                    className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors"
                     placeholder="Your name"
                   />
                 </label>
@@ -102,7 +102,7 @@ export default function ContactSection() {
                     name="email"
                     required
                     autoComplete="email"
-                    className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors"
+                    className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors"
                     placeholder="you@example.com"
                   />
                 </label>
@@ -116,7 +116,7 @@ export default function ContactSection() {
                   name="message"
                   required
                   rows={5}
-                  className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors resize-y min-h-[120px]"
+                  className="bg-ivory border border-parchment px-4 py-3 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors resize-y min-h-[120px]"
                   placeholder="How can we help?"
                 />
               </label>

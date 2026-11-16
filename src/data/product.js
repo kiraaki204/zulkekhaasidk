@@ -1,4 +1,4 @@
-import heroImage from '../assets/images/Zulfe Khaas Hair Oil Still Life.png'
+import heroImage from '../assets/images/zulfe-khaas-hero.webp'
 
 export const product = {
   id: 'zulfe-khaas-hair-oil-150',

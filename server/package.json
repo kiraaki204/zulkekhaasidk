@@ -7,6 +7,7 @@
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
     "lint": "eslint .",
+    "audit": "npm audit --omit=dev --audit-level=high",
     "migrate": "prisma migrate dev",
     "deploy": "prisma migrate deploy",
     "seed": "node scripts/seed.js",
@@ -25,6 +26,9 @@
     "express-rate-limit": "^8.7.4",
     "helmet": "^8.3.0",
     "zod": "^4.6.7"
+  },
+  "overrides": {
+    "deepmerge-ts": "^8.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

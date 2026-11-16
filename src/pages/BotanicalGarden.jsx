@@ -1,26 +1,24 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Search, Sprout, X } from 'lucide-react'
 import { herbs, getHerbById } from '../data/herbs'
-import { useReveal } from '../hooks/useUi'
+import { useReveal, useFocusTrap } from '../hooks/useUi'
 import { BotanicalSprig } from '../components/common/BrandMarks'
 import { ButtonLink } from '../components/common/Button'
 
 function HerbProfile({ herb, onClose }) {
-  const closeRef = useMemo(() => ({ current: null }), [])
+  const closeRef = useRef(null)
+  const panelRef = useRef(null)
+
+  useFocusTrap(panelRef, { active: Boolean(herb), initialFocusRef: closeRef, onEscape: onClose })
 
   useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
-    closeRef.current?.focus()
+    if (!herb) return undefined
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
-      window.removeEventListener('keydown', onKey)
       document.body.style.overflow = prev
     }
-  }, [onClose, closeRef])
+  }, [herb])
 
   if (!herb) return null
 
@@ -33,6 +31,7 @@ function HerbProfile({ herb, onClose }) {
         onClick={onClose}
       />
       <article
+        ref={panelRef}
         className="relative bg-ivory w-full md:max-w-xl max-h-[92vh] overflow-y-auto border border-parchment/70 shadow-2xl md:rounded-sm"
         style={{ animation: 'page-fade 0.3s ease both' }}
       >
@@ -138,7 +137,7 @@ export default function BotanicalGarden() {
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
                 placeholder="Name or botanical name…"
-                className="bg-cream border border-parchment pl-9 pr-4 py-2.5 font-body text-sm text-deep-brown placeholder:text-parchment focus:border-rosewood focus:outline-none transition-colors w-full sm:w-72"
+                className="bg-cream border border-parchment pl-9 pr-4 py-2.5 font-body text-sm text-deep-brown placeholder:text-deep-brown-soft/90 focus:border-rosewood focus:outline-none transition-colors w-full sm:w-72"
               />
             </span>
           </label>
@@ -181,7 +180,7 @@ export default function BotanicalGarden() {
                   <span className="font-heading text-lg text-deep-brown leading-tight">
                     {herb.name}
                   </span>
-                  <span className="font-heading italic text-[0.78rem] text-rosewood/90 leading-snug">
+                  <span className="font-heading italic text-[0.78rem] text-rosewood leading-snug">
                     {herb.botanicalName}
                   </span>
                   <span className="mt-auto pt-2 font-body text-[0.62rem] uppercase tracking-[0.14em] text-deep-brown-soft group-hover:text-rosewood transition-colors inline-flex items-center gap-1">
