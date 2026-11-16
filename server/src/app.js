@@ -8,6 +8,7 @@ import { errorHandler, notFound } from './middleware/errors.js'
 import catalogRoutes from './routes/catalog.js'
 import orderRoutes from './routes/orders.js'
 import authRoutes from './routes/auth.js'
+import reviewRoutes from './routes/reviews.js'
 
 export function createApp() {
   const app = express()
@@ -50,6 +51,7 @@ export function createApp() {
   app.use('/api', catalogRoutes)
   app.use('/api', orderRoutes)
   app.use('/api', authRoutes)
+  app.use('/api', reviewRoutes)
 
   app.use(notFound)
   app.use(errorHandler)

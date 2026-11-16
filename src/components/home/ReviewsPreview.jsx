@@ -1,6 +1,8 @@
-import { Star } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { placeholderReviewMessage, reviews } from '../../data/reviews'
+import { Star } from 'lucide-react'
+import { placeholderReviewMessage } from '../../data/reviews'
+import { api } from '../../lib/api'
 import SectionHeading from '../common/SectionHeading'
 import { ButtonLink } from '../common/Button'
 import { useReveal } from '../../hooks/useUi'
@@ -23,7 +25,27 @@ function Stars({ count = 5, className = '' }) {
 
 export default function ReviewsPreview() {
   const ref = useReveal()
-  const hasReviews = reviews.length > 0
+  const [reviews, setReviews] = useState([])
+  const [state, setState] = useState('loading') // loading | ready | error
+
+  useEffect(() => {
+    let cancelled = false
+    api
+      .get('/reviews')
+      .then((data) => {
+        if (cancelled) return
+        setReviews(data.reviews.slice(0, 3))
+        setState('ready')
+      })
+      .catch(() => {
+        if (!cancelled) setState('error')
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const hasReviews = state === 'ready' && reviews.length > 0
 
   return (
     <section
@@ -47,9 +69,17 @@ export default function ReviewsPreview() {
           </Link>
         </div>
 
-        {!hasReviews ? (
+        {state === 'error' && (
+          <div className="mt-12 reveal bg-ivory border border-parchment/70 px-8 py-12 text-center max-w-2xl mx-auto">
+            <p className="font-body text-sm text-deep-brown-soft">
+              Reviews are briefly unavailable — the full collection lives on the reviews page.
+            </p>
+          </div>
+        )}
+
+        {!hasReviews && state !== 'error' && (
           <div
-            className="mt-12 reveal bg-ivory border border-parchment/70 px-8 py-14 md:px-14 md:py-18 text-center max-w-3xl mx-auto"
+            className="mt-12 reveal bg-ivory border border-parchment/70 px-8 py-14 md:px-14 text-center max-w-3xl mx-auto"
             style={{ '--reveal-delay': '80ms' }}
           >
             <p className="font-heading italic text-[clamp(1.4rem,3vw,2rem)] text-deep-brown text-balance">
@@ -68,17 +98,34 @@ export default function ReviewsPreview() {
               </ButtonLink>
             </div>
           </div>
-        ) : (
+        )}
+
+        {hasReviews && (
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
-            {reviews.slice(0, 3).map((r) => (
+            {reviews.map((r) => (
               <figure key={r.id} className="bg-ivory border border-parchment/60 px-6 py-7 flex flex-col gap-4">
                 <Stars count={r.rating} />
                 <blockquote className="font-body text-sm text-deep-brown-soft leading-relaxed flex-1">
-                  {r.text}
+                  {r.body}
                 </blockquote>
-                <figcaption className="font-heading italic text-sm text-deep-brown">
-                  — {r.author}
+                <figcaption className="flex items-baseline justify-between gap-2">
+                  <cite className="font-heading italic text-sm text-deep-brown not-italic">
+                    {r.authorName}
+                  </cite>
+                  <span className="font-body text-[0.58rem] uppercase tracking-[0.14em] text-botanical-deep">
+                    Verified
+                  </span>
                 </figcaption>
+                {r.sellerResponse && (
+                  <div className="bg-cream border-l-2 border-botanical px-3 py-2">
+                    <p className="font-body text-[0.58rem] uppercase tracking-[0.14em] text-botanical-deep mb-0.5">
+                      From Zulfe Khaas
+                    </p>
+                    <p className="font-body text-xs text-deep-brown-soft leading-relaxed">
+                      {r.sellerResponse}
+                    </p>
+                  </div>
+                )}
               </figure>
             ))}
           </div>
