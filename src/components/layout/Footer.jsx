@@ -5,8 +5,7 @@ import { LogoMark, Wordmark, BotanicalSprig } from '../common/BrandMarks'
 
 const shopLinks = [
   { to: '/product', label: 'Hair Oil — 150 ml' },
-  { to: '/botanical-garden', label: 'Botanical Garden' },
-  { to: '/journal', label: 'Botanical Journal' },
+  { to: '/botanical-book', label: 'Botanical Book' },
 ]
 
 const brandLinks = [

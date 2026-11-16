@@ -38,7 +38,7 @@ const chapters = [
       'The herbs are boiled in a mustard-oil base, drawing out their character over a slow flame. When the infusion is ready, we strain the mixture by hand, leaving the spent botanicals behind and keeping only the golden, herb-rich oil.',
       'That is the whole secret: good ingredients, patience, and no shortcuts.',
     ],
-    link: { to: '/botanical-garden', label: 'Meet the 27 herbs' },
+    link: { to: '/botanical-book', label: 'Meet the 27 herbs' },
   },
   {
     id: 'promise',
@@ -173,8 +173,8 @@ export default function About() {
             Twenty-seven herbs, each with its own history and its own place in our blend.
           </p>
           <div className="flex flex-wrap gap-4 justify-center mt-1">
-            <ButtonLink to="/botanical-garden" variant="solid" size="md">
-              Botanical Garden
+            <ButtonLink to="/botanical-book" variant="solid" size="md">
+              Botanical Book
             </ButtonLink>
             <ButtonLink to="/product" variant="outline" size="md">
               Shop the Oil

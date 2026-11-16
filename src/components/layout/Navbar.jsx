@@ -8,8 +8,7 @@ import { LogoMark, Wordmark } from '../common/BrandMarks'
 
 const leftLinks = [
   { to: '/product', label: 'Shop' },
-  { to: '/botanical-garden', label: 'Garden' },
-  { to: '/journal', label: 'Journal' },
+  { to: '/botanical-book', label: 'Botanical Book' },
 ]
 
 const rightLinks = [

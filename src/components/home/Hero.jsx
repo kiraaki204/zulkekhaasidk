@@ -52,7 +52,7 @@ export default function Hero() {
                 <ArrowRight size={15} strokeWidth={1.5} aria-hidden="true" />
               </ButtonLink>
               <Link
-                to="/botanical-garden"
+                to="/botanical-book"
                 className="font-body text-[0.72rem] uppercase tracking-[0.18em] text-deep-brown-soft hover:text-rosewood transition-colors border-b border-parchment hover:border-rosewood pb-1"
               >
                 Explore the 27 Herbs

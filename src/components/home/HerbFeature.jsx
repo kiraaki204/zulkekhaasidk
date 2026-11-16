@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { ArrowRight, Leaf } from 'lucide-react'
 import { herbs } from '../../data/herbs'
 import SectionHeading from '../common/SectionHeading'
@@ -130,16 +129,10 @@ export default function HerbFeature() {
             </dl>
 
             <div className="mt-8 pt-5 border-t border-parchment/60 flex flex-wrap gap-4">
-              <ButtonLink to="/botanical-garden" variant="solid" size="sm">
-                Open Botanical Garden
+              <ButtonLink to="/botanical-book" variant="solid" size="sm">
+                Open the Botanical Book
                 <ArrowRight size={13} strokeWidth={1.5} aria-hidden="true" />
               </ButtonLink>
-              <Link
-                to="/journal"
-                className="inline-flex items-center font-body text-[0.7rem] uppercase tracking-[0.16em] text-deep-brown-soft hover:text-rosewood transition-colors self-center"
-              >
-                Read the Journal →
-              </Link>
             </div>
           </article>
         </div>

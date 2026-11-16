@@ -189,7 +189,7 @@ export default function Product() {
             {/* Understated links */}
             <div className="mt-8 flex flex-col gap-3 max-w-lg">
               <a
-                href="/botanical-garden"
+                href="/botanical-book"
                 className="group inline-flex items-center justify-between border-b border-parchment/70 pb-2 font-body text-[0.75rem] uppercase tracking-[0.16em] text-deep-brown-soft hover:text-rosewood hover:border-rosewood/50 transition-colors"
               >
                 Discover the 27 Herbs
@@ -216,7 +216,7 @@ export default function Product() {
       <section className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16 md:pb-24">
         <div className="reveal bg-cream border border-parchment/70 px-6 py-10 md:px-12 md:py-14 text-center flex flex-col items-center gap-4">
           <SectionHeading
-            eyebrow="From the journal"
+            eyebrow="From the botanical book"
             title="Twenty-seven herbs, one slow simmer"
             titleAs="h2"
             align="center"
@@ -228,10 +228,10 @@ export default function Product() {
             Meet the botanicals behind the bottle.
           </p>
           <a
-            href="/journal"
+            href="/botanical-book"
             className="mt-2 font-body text-[0.72rem] uppercase tracking-[0.18em] text-rosewood hover:text-deep-brown border-b border-rosewood/40 hover:border-deep-brown pb-1 transition-colors"
           >
-            Read the Botanical Journal →
+            Open the Botanical Book →
           </a>
         </div>
       </section>

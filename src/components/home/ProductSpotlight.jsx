@@ -73,7 +73,7 @@ export default function ProductSpotlight() {
                 View Product
                 <ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />
               </ButtonLink>
-              <ButtonLink to="/botanical-garden" size="md" variant="outline">
+              <ButtonLink to="/botanical-book" size="md" variant="outline">
                 The 27 Herbs
               </ButtonLink>
             </div>
