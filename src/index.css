@@ -346,3 +346,14 @@ ul, ol {
     radial-gradient(120% 90% at 50% 0%, rgba(238, 216, 215, 0.22), transparent 60%),
     linear-gradient(158deg, #7E5B52 0%, #5d443c 55%, #463A30 100%);
 }
+
+/* Drop cap for editorial body copy */
+.zk-dropcap::first-letter {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 2.55em;
+  line-height: 0.8;
+  float: left;
+  padding: 0.07em 0.16em 0 0;
+  color: var(--color-rosewood);
+}
