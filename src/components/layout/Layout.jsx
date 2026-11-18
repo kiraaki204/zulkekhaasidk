@@ -26,7 +26,11 @@ export default function Layout() {
       </a>
       <Navbar />
       <BagDrawer />
-      <main id="main" key={pathname} className="flex-1 page-enter pt-[var(--nav-height)]">
+      <main
+        id="main"
+        key={pathname}
+        className={`flex-1 page-enter${pathname === '/' ? '' : ' pt-[var(--nav-height)]'}`}
+      >
         <Outlet />
       </main>
       <Footer />

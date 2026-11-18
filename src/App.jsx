@@ -7,6 +7,8 @@ import BotanicalBook from './pages/BotanicalBook'
 import Reviews from './pages/Reviews'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import LogoComparison from './pages/LogoComparison'
+import ConstellationComparison from './pages/ConstellationComparison'
 import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
 import Admin from './pages/Admin'
@@ -27,6 +29,8 @@ export default function App() {
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/logo-comparison" element={<LogoComparison />} />
+            <Route path="/constellation-comparison" element={<ConstellationComparison />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-success" element={<OrderSuccess />} />
             <Route path="/admin" element={<Admin />} />

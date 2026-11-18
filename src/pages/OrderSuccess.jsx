@@ -4,7 +4,8 @@ import { Leaf } from 'lucide-react'
 import { product, formatPrice, orderTotals } from '../data/product'
 import { api } from '../lib/api'
 import { useReveal } from '../hooks/useUi'
-import { BotanicalSprig, CornerLeaf, LogoMark } from '../components/common/BrandMarks'
+import { BotanicalSprig, CornerLeaf } from '../components/common/BrandMarks'
+import Wordmark from '../components/common/wordmarks'
 import { ButtonLink } from '../components/common/Button'
 
 function readLastOrder(reference) {
@@ -56,9 +57,6 @@ function ThankYouCard() {
           }}
           aria-hidden="true"
         >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <LogoMark size={44} className="text-botanical/60" />
-          </div>
         </div>
 
         <div
@@ -80,9 +78,7 @@ function ThankYouCard() {
             <p className="font-body text-xs uppercase tracking-[0.2em] text-deep-brown-soft">
               With warmth,
             </p>
-            <p className="font-heading text-2xl tracking-[0.14em] uppercase text-deep-brown">
-              Zulfe Khaas
-            </p>
+            <Wordmark size="lg" className="text-deep-brown" />
           </div>
 
           <div className="mt-8 pt-5 border-t border-parchment/60 flex justify-center" aria-hidden="true">

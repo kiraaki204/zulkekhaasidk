@@ -1,66 +1,10 @@
 import { useMemo, useState } from 'react'
-import { ArrowRight, Leaf } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { herbs } from '../../data/herbs'
 import SectionHeading from '../common/SectionHeading'
 import { ButtonLink } from '../common/Button'
 import { useReveal } from '../../hooks/useUi'
-
-/** Decorative circular composition of herb names around a centre mark. */
-function HerbOrbit({ activeId, onSelect }) {
-  const radius = 42 // percent
-  return (
-    <div
-      className="relative w-full max-w-[420px] aspect-square mx-auto"
-      role="list"
-      aria-label="Herb constellation"
-    >
-      <div
-        className="absolute inset-[12%] rounded-full border border-parchment/70"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-[24%] rounded-full border border-botanical/30"
-        aria-hidden="true"
-      />
-
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-10">
-        <Leaf className="w-6 h-6 text-botanical mb-2" strokeWidth={1.2} aria-hidden="true" />
-        <p className="font-heading text-[clamp(1.5rem,3vw,2rem)] leading-tight text-deep-brown">
-          27 Herbs
-        </p>
-        <p className="font-body text-[0.7rem] uppercase tracking-[0.16em] text-deep-brown-soft mt-1">
-          One careful blend
-        </p>
-      </div>
-
-      {herbs.map((herb, i) => {
-        const angle = (i / herbs.length) * 2 * Math.PI - Math.PI / 2
-        const x = 50 + radius * Math.cos(angle)
-        const y = 50 + radius * Math.sin(angle)
-        const active = activeId === herb.id
-        return (
-          <button
-            key={herb.id}
-            type="button"
-            role="listitem"
-            aria-pressed={active}
-            aria-label={herb.name}
-            onClick={() => onSelect(herb)}
-            className={[
-              'absolute -translate-x-1/2 -translate-y-1/2 rounded-full px-2 py-1 font-body text-[0.62rem] sm:text-[0.68rem] tracking-[0.04em] transition-all duration-300 border',
-              active
-                ? 'bg-botanical text-cream border-botanical-deep scale-110 shadow-lg z-10'
-                : 'bg-ivory/90 text-deep-brown-soft border-parchment/70 hover:border-botanical hover:text-deep-brown hover:scale-105',
-            ].join(' ')}
-            style={{ left: `${x}%`, top: `${y}%` }}
-          >
-            {herb.name}
-          </button>
-        )
-      })}
-    </div>
-  )
-}
+import Constellation from './constellations'
 
 export default function HerbFeature() {
   const ref = useReveal()
@@ -91,7 +35,7 @@ export default function HerbFeature() {
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="reveal">
-            <HerbOrbit activeId={preview?.id} onSelect={setSelected} />
+            <Constellation activeId={preview?.id} onSelect={setSelected} />
           </div>
 
           <article

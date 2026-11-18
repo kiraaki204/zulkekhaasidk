@@ -7,6 +7,7 @@ export default function SectionHeading({
   eyebrow,
   title,
   titleAs: Tag = 'h2',
+  id,
   align = 'left',
   accent = true,
   className = '',
@@ -22,7 +23,7 @@ export default function SectionHeading({
   return (
     <div className={`flex flex-col gap-3 ${alignCls} ${className}`}>
       {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-      <Tag className="font-heading text-deep-brown text-[clamp(1.85rem,4vw,3rem)] leading-[1.1] text-balance">
+      <Tag id={id} className="font-heading text-deep-brown text-[clamp(1.85rem,4vw,3rem)] leading-[1.1] text-balance">
         {title}
       </Tag>
       {accent && (

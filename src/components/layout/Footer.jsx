@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Mail, MessageCircle } from 'lucide-react'
 import { InstagramIcon } from '../common/SocialIcons'
-import { LogoMark, Wordmark, BotanicalSprig } from '../common/BrandMarks'
+import { BotanicalSprig } from '../common/BrandMarks'
+import Wordmark from '../common/wordmarks'
 
 const shopLinks = [
   { to: '/product', label: 'Hair Oil — 150 ml' },
@@ -49,9 +50,8 @@ export default function Footer() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8">
           <div className="md:col-span-4 flex flex-col gap-4">
-            <Link to="/" className="inline-flex items-center gap-3 group w-fit" aria-label="Zulfe Khaas home">
-              <LogoMark size={32} className="text-butter group-hover:text-rosewood-soft transition-colors" />
-              <Wordmark className="text-ivory group-hover:text-butter transition-colors" />
+            <Link to="/" className="group w-fit" aria-label="Zulfe Khaas home">
+              <Wordmark size="lg" className="text-ivory group-hover:text-butter transition-colors" />
             </Link>
             <p className="font-body text-sm text-ivory/65 max-w-xs leading-relaxed">
               Editorial botanical hair care. One oil, twenty-seven herbs, one careful ritual.

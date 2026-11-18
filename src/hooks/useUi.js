@@ -35,7 +35,30 @@ export function useReveal(options = {}) {
     )
 
     targets.forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
+
+    const reveal = (el) => {
+      if (reduced) {
+        el.classList.add('is-visible')
+        return
+      }
+      observer.observe(el)
+    }
+
+    const mutations = new MutationObserver((list) => {
+      list.forEach((record) => {
+        record.addedNodes.forEach((node) => {
+          if (node.nodeType !== 1) return
+          if (node.classList.contains('reveal')) reveal(node)
+          node.querySelectorAll('.reveal').forEach(reveal)
+        })
+      })
+    })
+    mutations.observe(root, { childList: true, subtree: true })
+
+    return () => {
+      observer.disconnect()
+      mutations.disconnect()
+    }
   }, [threshold, rootMargin])
 
   return ref

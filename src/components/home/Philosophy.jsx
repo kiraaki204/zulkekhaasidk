@@ -25,7 +25,7 @@ export default function Philosophy() {
     <section
       ref={ref}
       aria-labelledby="philosophy"
-      className="py-20 md:py-28 bg-ivory relative overflow-hidden"
+      className="py-20 md:py-28 bg-dusty-pink/30 relative overflow-hidden"
     >
       <CornerLeaf
         className="absolute -bottom-6 -left-4 w-28 text-botanical/25 rotate-90 pointer-events-none"
@@ -37,13 +37,13 @@ export default function Philosophy() {
           <div className="lg:col-span-5 reveal">
             <SectionHeading
               eyebrow="Our Philosophy"
-              title="Brand notes from a botanical journal"
+              title="What we stand behind"
               titleAs="h2"
               id="philosophy"
             >
               <p>
-                Zulfe Khaas sits at the meeting point of a luxury beauty editorial and a
-                carefully kept herbal diary. These are the promises we write in the margins.
+                Zulfe Khaas is made in small batches for people who read the label first.
+                These are the promises we hold ourselves to, every time a bottle is filled.
               </p>
             </SectionHeading>
 
@@ -59,9 +59,12 @@ export default function Philosophy() {
             {pillars.map((p, i) => (
               <article
                 key={p.label}
-                className="bg-cream border-t-2 border-botanical/50 px-5 py-7 h-full"
+                className={[
+                  'border-t-2 px-5 py-7 h-full',
+                  i === 1 ? 'bg-sage/45 border-eucalyptus-deep/70' : i === 2 ? 'bg-dusty-pink/40 border-dusty-pink-deep/70' : 'bg-cream border-botanical/50',
+                ].join(' ')}
               >
-                <p className="font-heading text-3xl text-parchment" aria-hidden="true">
+                <p className="font-heading text-3xl text-deep-brown/25" aria-hidden="true">
                   {String(i + 1).padStart(2, '0')}
                 </p>
                 <h3 className="font-heading text-lg text-deep-brown mt-3">{p.label}</h3>

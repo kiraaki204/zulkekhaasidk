@@ -67,10 +67,6 @@ export default function HowToUse({ compact = false }) {
           )
         })}
       </ol>
-
-      <p className="mt-6 font-body text-[0.7rem] uppercase tracking-[0.14em] text-deep-brown-soft/75">
-        Confirmed instructions will replace these steps as they become available
-      </p>
     </section>
   )
 }

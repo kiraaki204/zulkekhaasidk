@@ -1,40 +1,5 @@
 /** Shared brand marks — lightweight SVG so we don't depend on external assets. */
 
-export function LogoMark({ className = '', size = 36 }) {
-  return (
-    <svg
-      viewBox="0 0 48 48"
-      width={size}
-      height={size}
-      className={className}
-      aria-hidden="true"
-      fill="none"
-    >
-      <circle cx="24" cy="24" r="22.5" stroke="currentColor" strokeWidth="1" opacity="0.35" />
-      <path
-        d="M24 8c.4 6.5 3.2 11.2 8.5 14-5.3 2.8-8.1 7.5-8.5 14-.4-6.5-3.2-11.2-8.5-14 5.3-2.8 8.1-7.5 8.5-14Z"
-        stroke="currentColor"
-        strokeWidth="1.2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M24 16v16M18 24h12"
-        stroke="currentColor"
-        strokeWidth="0.8"
-        opacity="0.55"
-      />
-    </svg>
-  )
-}
-
-export function Wordmark({ className = '' }) {
-  return (
-    <span className={`font-heading tracking-[0.18em] uppercase text-[0.95rem] md:text-[1.05rem] font-medium ${className}`}>
-      Zulfe Khaas
-    </span>
-  )
-}
-
 export function BotanicalSprig({ className = '', flip = false }) {
   return (
     <svg

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Prata&display=swap');
 
 @import "tailwindcss";
 
@@ -6,6 +6,22 @@
   --font-heading: "Cormorant Garamond", Georgia, serif;
   --font-body: "DM Sans", system-ui, sans-serif;
 
+  /* Official Zulfe Khaas palette */
+  --color-eucalyptus: #B9C9B7;
+  --color-sage: #C9D3BD;
+  --color-dusty-pink: #DDB9B8;
+  --color-warm-cream: #EFE5D5;
+  --color-rosewood: #98766D;
+  --color-deep-brown: #463A30;
+
+  /* Tonal variations — contrast-safe derivations of the core palette */
+  --color-eucalyptus-deep: #7C9078;
+  --color-eucalyptus-pale: #D3DED1;
+  --color-dusty-pink-deep: #C89A99;
+  --color-dusty-pink-pale: #EED8D7;
+  --color-rosewood-ink: #7E5B52;
+
+  /* Supporting neutrals */
   --color-ivory: #F6F0E5;
   --color-ivory-deep: #EFE7D7;
   --color-parchment: #D9D0B9;
@@ -14,9 +30,7 @@
   --color-botanical-deep: #8B9470;
   --color-butter: #E8D99F;
   --color-butter-soft: #F0E6BC;
-  --color-rosewood: #98766D;
   --color-rosewood-soft: #C4A99F;
-  --color-deep-brown: #463A30;
   --color-deep-brown-soft: #6B5A4C;
   --color-cream: #FBF8F1;
   --color-ink: #2E251E;
@@ -56,6 +70,7 @@ html {
   }
 }
 
+@layer base {
 body {
   margin: 0;
   min-width: 320px;
@@ -103,6 +118,7 @@ ul, ol {
   padding: 0;
   list-style: none;
 }
+}
 
 ::selection {
   background-color: var(--color-butter);
@@ -114,6 +130,7 @@ ul, ol {
   outline-offset: 3px;
 }
 
+@layer components {
 /* ——— Editorial utilities ——— */
 
 .font-heading {
@@ -134,7 +151,7 @@ ul, ol {
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--color-rosewood);
+  color: var(--color-rosewood-ink);
 }
 
 .rule-botanical {
@@ -236,4 +253,62 @@ ul, ol {
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-botanical);
   }
+}
+
+/* ——— Brand wordmark ——— */
+
+.zk-mark {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  color: inherit;
+  line-height: 1;
+}
+
+.zk-mark__line {
+  display: block;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.zk-mark--bodoni .zk-mark__line {
+  font-family: "Bodoni Moda", Didot, "Times New Roman", serif;
+  font-weight: 500;
+  font-optical-sizing: auto;
+  text-transform: uppercase;
+  letter-spacing: 0.155em;
+  margin-right: -0.155em;
+  font-size: 1.04rem;
+}
+
+.zk-mark--editorial .zk-mark__line {
+  font-family: "Prata", "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.012em;
+  font-size: 1.16rem;
+}
+
+.zk-mark--editorial .zk-mark__swash {
+  width: 100%;
+  height: auto;
+  margin-top: 0.3em;
+  overflow: visible;
+}
+
+.zk-mark--lg.zk-mark--bodoni .zk-mark__line {
+  font-size: 1.5rem;
+}
+
+.zk-mark--lg.zk-mark--editorial .zk-mark__line {
+  font-size: 1.68rem;
+}
+
+.zk-mark--display.zk-mark--bodoni .zk-mark__line {
+  font-size: clamp(1.8rem, 3.4vw, 2.9rem);
+}
+
+.zk-mark--display.zk-mark--editorial .zk-mark__line {
+  font-size: clamp(2.6rem, 6.4vw, 4.4rem);
+}
+
 }

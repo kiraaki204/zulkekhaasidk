@@ -13,6 +13,12 @@ const conceptMap = {
   hybrid: hybridConcept,
 }
 
+const conceptTint = {
+  vintage: 'bg-butter-soft/45 hover:bg-butter-soft/70',
+  editorial: 'bg-sage/45 hover:bg-sage/65',
+  hybrid: 'bg-dusty-pink/45 hover:bg-dusty-pink/65',
+}
+
 export default function BotanicalBook() {
   const { concept: param } = useParams()
 
@@ -55,9 +61,10 @@ export default function BotanicalBook() {
                   className={[
                     'flex w-full items-center gap-3 rounded-sm border px-4 py-3 text-left transition-colors duration-300 sm:w-auto sm:flex-1',
                     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosewood',
+                    conceptTint[c.id],
                     active
-                      ? 'border-deep-brown bg-cream shadow-[0_2px_0_rgba(46,37,30,0.08)]'
-                      : 'border-parchment bg-cream/50 hover:border-botanical-deep hover:bg-cream',
+                      ? 'border-deep-brown shadow-[0_2px_0_rgba(46,37,30,0.08)]'
+                      : 'border-parchment hover:border-botanical-deep',
                   ].join(' ')}
                 >
                   <span
