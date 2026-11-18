@@ -312,3 +312,37 @@ ul, ol {
 }
 
 }
+
+/* ——— Homepage editorial additions ——— */
+
+@keyframes zk-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.zk-marquee-track {
+  animation: zk-marquee 42s linear infinite;
+}
+
+@keyframes zk-spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+.animate-zk-spin-slow {
+  animation: zk-spin-slow 48s linear infinite;
+}
+
+/* Arched "plate" frames — echo the arch in the studio photography */
+.zk-arch {
+  border-top-left-radius: 9999px;
+  border-top-right-radius: 9999px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Fine dashed placeholder frame for pending brand assets */
+.zk-asset-pending {
+  background-image:
+    radial-gradient(120% 90% at 50% 0%, rgba(238, 216, 215, 0.22), transparent 60%),
+    linear-gradient(158deg, #7E5B52 0%, #5d443c 55%, #463A30 100%);
+}

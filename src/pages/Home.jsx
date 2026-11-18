@@ -2,8 +2,8 @@ import Hero from '../components/home/Hero'
 import BrandIntro from '../components/home/BrandIntro'
 import ProductSpotlight from '../components/home/ProductSpotlight'
 import HerbFeature from '../components/home/HerbFeature'
-import Philosophy from '../components/home/Philosophy'
-import ReviewsPreview from '../components/home/ReviewsPreview'
+import Ritual from '../components/home/Ritual'
+import ClosingMoment from '../components/home/ClosingMoment'
 import { useReveal } from '../hooks/useUi'
 
 export default function Home() {
@@ -15,8 +15,8 @@ export default function Home() {
       <BrandIntro />
       <ProductSpotlight />
       <HerbFeature />
-      <Philosophy />
-      <ReviewsPreview />
+      <Ritual />
+      <ClosingMoment />
     </div>
   )
 }

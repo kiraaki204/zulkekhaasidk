@@ -7,6 +7,9 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss()],
     server: {
+      // The Arena preview proxies the dev server through a per-session host —
+      // accept any Host header so the preview iframe can reach it.
+      allowedHosts: true,
       proxy: {
         '/api': {
           target: env.VITE_API_PROXY || 'http://localhost:4000',

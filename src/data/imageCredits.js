@@ -10,7 +10,7 @@ export const imageCredits = [
     landingUrl: 'https://wordpress.org/photos/photo/8627f323a3/',
     imageUrl: 'https://pd.w.org/2022/05/8627f323a3bff76.54746621.jpg',
     retrieved: '2026-11-16',
-    usedOn: ['Hero (atmosphere variant)'],
+    usedOn: ['Hero (atmosphere variant)', 'Meet Zulfe Khaas'],
   },
 ]
 

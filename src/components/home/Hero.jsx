@@ -105,9 +105,11 @@ export default function Hero() {
         </a>
       )}
 
-      {/* Bottom fade into next section */}
+      {/* Bottom fade into the Meet Zulfe Khaas section — a long, soft dissolve
+          into the exact warm-cream the next section opens with, so the two
+          sections read as one continuous room rather than two bands. */}
       <div
-        className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-ivory to-transparent pointer-events-none z-10"
+        className="absolute bottom-0 inset-x-0 h-28 md:h-40 bg-gradient-to-t from-warm-cream via-warm-cream/45 via-35% to-transparent pointer-events-none z-10"
         aria-hidden="true"
       />
     </section>
